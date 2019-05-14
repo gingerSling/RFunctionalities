@@ -216,6 +216,90 @@ cvDat<-function(dat,cv=10,id="id"){
 }
 
 
+###This function standarize the data given in dat. It will return a list
+###Consisting on the standarize trainning data and the means and sd of
+###each feature so that we can pass it as "trainning" in order to standarize
+###the test set.
+centraYEscalaM<-function(dat,training=""){
+	if(is.null(dim(training))){
+		res<-data.frame(var=integer(),med=numeric(),desv=numeric())
+		lapply(1:ncol(dat),function(x){
+			if((is.numeric(dat[,x])) | is.integer(dat[,x])){
+				m<-mean(dat[,x])
+				st<-sd(dat[,x])
+				res<<-rbind(res,data.frame(var=x,med=m,desv=st))
+			}
+		})
+		lapply(1:nrow(res),function(x){
+			v<-res[x,1]
+			dat[,v]<<-(dat[,v]-res[x,2])/res[x,3]
+		})
+		list(dat,res)
+	}
+	else{
+		lapply(1:nrow(training),function(x){
+			v<-training[x,1]
+			dat[,v]<<-(dat[,v]-training[x,2])/training[x,3]
+		})
+		dat
+	}
+}
+
+
+
+
+###This function simply add the levels of the different factor features
+###of date set y to the factor features of data set x
+addLevel<-function(x,y){
+    nomb<-colnames(x)
+    for(i in 1:dim(x)[2]){
+        if(is.factor(x[,nomb[i]])){
+            indx<-(colnames(x) %in% nomb[i])
+            indy<-(colnames(y) %in% nomb[i])
+            x[,indx] <- as.factor(as.character(x[,indx]))
+            y[,indy] <- as.factor(as.character(y[,indy]))
+            levx<-levels(x[,indx])
+            levy<-levels(y[,indy])
+            levels(x[,indx])<-c(levx,levy[!(levy %in% levx)])
+
+        }
+    }
+    x
+}
+
+###This function hot encode those variables that are factors in the given
+###data set 
+dumVar<-function(tr){
+ 
+  res<-data.frame(guantanamera=tr[,1])
+  cont=2
+  for(i in 1:dim(tr)[2]){
+    if(is.factor(tr[,i])){
+      if(length(levels(tr[,i]))<100){
+        lvl<-levels(tr[,i])
+        for (j in 1:(length(lvl)-1)){
+          res$guant<-ifelse(tr[,i]==lvl[j],1,0)
+          res$guant<-as.integer(as.character(res$guant))
+          colnames(res)[cont]<-paste(colnames(tr)[i],lvl[j],sep = "")
+          cont=cont+1
+        }
+      }
+      else{
+        res$guant<-tr[,i]
+        colnames(res)[cont]<-colnames(tr)[i]
+        cont=cont+1
+       
+      }
+    }
+    else{
+      res$guant<-tr[,i]
+      colnames(res)[cont]<-colnames(tr)[i]
+      cont=cont+1
+    }
+  }
+  res<-res[,-1]
+  res 
+}
 
 
 
