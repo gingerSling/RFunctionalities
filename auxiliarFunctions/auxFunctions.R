@@ -1,5 +1,7 @@
 
 
+###This function will transform the integers provided in v to his corresponding character partner provided in ref.
+
 integerChar<-function(v,ref){
 
 	ref<-as.character(ref)
@@ -14,6 +16,7 @@ integerChar<-function(v,ref){
 
 }
 
+###This function will transform the character labels provided in v to integers
 charInteger<-function(v){
   
   v<-as.character(v)
@@ -29,6 +32,7 @@ charInteger<-function(v){
   
 }
 
+###This function will compute the random forest's importance function. It will use parallel computing.
 importRF<-function(x,y){
   datUnid<-x
   datUnid$targ<-y
@@ -55,7 +59,7 @@ importRF<-function(x,y){
 }
 
 
-
+### This function will copute the correlation between the variables provided in datos and check if any of those superpass the threshold indicated in corId
 corrMany<-function(datos,corId){
   
   df<-data.frame(vars=colnames(datos))
@@ -84,6 +88,7 @@ corrMany<-function(datos,corId){
   
 }
 
+### This function is the 2 leaves augmentation function taken adapted from the kaggle's kernel: https://www.kaggle.com/jiweiliu/lgb-2-leaves-augment
 
 Aug<-function(datos,n=4,p=2,s=1,t=1){
   
@@ -145,7 +150,7 @@ Aug<-function(datos,n=4,p=2,s=1,t=1){
   
 }
 
-
+###This function will create cv groups of the data provided in dat. In order to create subgroups with the same target distribution the user must change the name of the target variable to "target" and indicate the id variable.
 
 cvDat<-function(dat,cv=10,id="id"){
   
@@ -214,6 +219,9 @@ cvDat<-function(dat,cv=10,id="id"){
     df
   }
 }
+
+
+
 
 
 ###This function standarize the data given in dat. It will return a list
