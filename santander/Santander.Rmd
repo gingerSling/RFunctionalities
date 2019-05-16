@@ -2,10 +2,10 @@
 title: "Santander"
 author: "Pablo Portillo Garrigues"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     theme: united
-    toc: yes
-  pdf_document:
     toc: yes
 ---
 
@@ -206,7 +206,7 @@ colnames(trainAug)[1]<-"ID_code"
 ```
 
 
-# 3 different Models
+## 3 different Models
 
 
 We are going to take 4 different aproaches:
@@ -217,7 +217,7 @@ We are going to take 4 different aproaches:
 
 Here you can see more information on the ACO algorithm and you can check the ACO and GAFS algorithm on my [Github.](https://github.com/gingerSling/RFunctionalities/tree/master/optimizationFunctions)
 
-## Apply the ACO algorithm to all the variables
+### Apply the ACO algorithm to all the variables
 
 We will first apply the ACO on al the variables to see what parameters for the XGB it suggest us to use.
 
@@ -267,7 +267,7 @@ Our local results are of 0.906751, we have obtain a private score of 0.89567.
 
 
 
-## Apply the GAFS and the ACO
+### Apply the GAFS and the ACO
 
 We wil use the GAFS algorithm to see what features seems to be the most important. In order to perform the GAFS we are going to define a custome cost function which will consist on a 5-cross validated model of XGB with parameters prefixed. The validation sets will only have rows of the original data (it wont have synthetic rows).
 
@@ -338,7 +338,7 @@ costXGBAco(trainAugGafs,paramList=c(0.186756052798322,3000,2,0.164428395167602,0
 
 Our local results are of 0.9058285, we have obtain a private score of 0.89441.
 
-##XGB importance and ACO
+### XGB importance and ACO
 
 We will use the XGB's importance function and filter out some variables.
 
